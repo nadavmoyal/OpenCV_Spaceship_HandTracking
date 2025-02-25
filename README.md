@@ -1,5 +1,24 @@
-# OpenCV_Spaceship_HandTracking
-Spaceship Hand Tracking Game with OpenCV - An interactive game where you control a spaceship using hand gestures, avoiding asteroids and tracking your score. Built with Python and OpenCV for real-time hand tracking.
+# Spaceship Hand Tracking Game
+
+## Description
+
+A spaceship game where the player controls the spaceship using hand gestures tracked by a camera. Avoid asteroids and score points to win!
+
+## Required Libraries
+
+To run the game, you will need to install the following libraries:
+
+- **cvzone**: For hand detection and tracking (includes OpenCV functionality).
+- **screeninfo**: To get screen resolution and manage window size.
+- **numpy**: For advanced mathematical operations and image manipulation.
+- **mediapipe**: For hand tracking and other image processing tasks.
+
+## Installation
+
+To install the necessary dependencies, you can use pip:
+```bash
+pip install cvzone screeninfo numpy mediapipe
+```
 
 ### Download the EXE file
 
