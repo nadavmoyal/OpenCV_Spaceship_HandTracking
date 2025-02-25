@@ -31,5 +31,4 @@ Enjoy playing!
 ### Download the EXE file
 
 You can download the EXE file from the following Dropbox link:
-
-[Download EXE](https://www.dropbox.com/scl/fi/x18p5agufrdkgdv4fd1vd/game.zip?rlkey=w2mepw68w0appmpb6dn7vew23&st=9sb4i1c2&dl=0)
+TBC
