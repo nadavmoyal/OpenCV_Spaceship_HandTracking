@@ -32,4 +32,4 @@ Enjoy playing!
 
 You can download the EXE file from the following Dropbox link:
 
-[Download EXE](https://www.dropbox.com/scl/fi/zmtmzspobc4zh9nt706kf/Spaceship-Game-v2.exe?rlkey=73pa2pl63f7vv7yv000f8i54n&st=9ahmrwv3&dl=0)
+[Download EXE](https://www.dropbox.com/scl/fi/x18p5agufrdkgdv4fd1vd/game.zip?rlkey=w2mepw68w0appmpb6dn7vew23&st=9sb4i1c2&dl=0)
