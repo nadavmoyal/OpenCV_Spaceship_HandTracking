@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/0c58de66-6f10-4b1b-8ee1-b16ca328fdc2)
+
+
 # Spaceship Hand Tracking Game
 
 ## Description
