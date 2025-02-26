@@ -27,8 +27,9 @@ pip install cvzone screeninfo numpy mediapipe
 
 Alternatively, you can skip the installation and download the EXE file to start the game directly!
 
-Download the EXE File
-Skip the installation and download the EXE file directly:
+## Download the EXE File
+
+Skip the installation and download the **EXE** file directly:
 
 [Download EXE](https://www.dropbox.com/scl/fi/k6bkgnbdpeojii88nh4q0/Spaceship-Game-v3.exe?rlkey=977gi1vu8krx1ytts2o3lomq1&st=30xoorkc&dl=0)
 
