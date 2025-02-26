@@ -1,82 +1,159 @@
 """
-Represents the main game engine that runs the spaceship game, handles input,
-updates the game state, and manages game over and restart.
+Represents the game logic, including asteroid movement, spaceship control,
+collision detection, and score tracking.
 
 Attributes:
-- game (Game): The Game object that contains the game's logic and data.
+- imgBackground (numpy.ndarray): Background image of the game.
+- asteroid_img (numpy.ndarray): Image of the asteroid.
+- spaceship_img (numpy.ndarray): Image of the spaceship.
+- cap (cv2.VideoCapture): Capture object for video input from the camera.
+- screen_width (int): Width of the screen.
+- screen_height (int): Height of the screen.
+- game_over (bool): A flag to indicate if the game is over.
+- detector (HandDetector): Hand detection object for tracking hand gestures.
+- start_time (float): The time when the game started.
+- total_score (int): The player's score.
+- asteroids (list): List of Asteroid objects representing the obstacles in the game.
+- spaceship (Spaceship): The Spaceship object controlled by the player.
 
 Methods:
-- __init__(): Initializes the game engine and the Game object.
-- run(): Main game loop that captures video, processes hand gestures,
-         updates the game, and handles game over and restart logic.
-- display_game_over(img): Displays the game over screen.
+- __init__(): Initializes the game, loads assets, and sets up the camera.
+- generate_asteroid_pos(): Generates a random position for the asteroid on the screen.
+- generate_asteroid_speed(): Generates a random speed for the asteroid.
+- check_collision(): Checks for a collision between the spaceship and any asteroid.
+- reset(): Resets the game, including the score, asteroids, and other parameters.
+- update(): Updates the game state, including hand tracking, spaceship movement,
+  asteroid movement, and collision detection.
 """
-
+import os
+import sys
 import cv2
-import cvzone
-from Game import Game
+from cvzone.HandTrackingModule import HandDetector
+import time
+from Asteroid import Asteroid
+from Spaceship import Spaceship
+import screeninfo
+import random
 
-ESC_KEY = 27
-SPACE_KEY = 32
-
-class GameEngine:
+class Game:
     def __init__(self):
-        self.game = Game()
-
-    def run(self):
         """
-        Main game loop that:
-        - Captures video frames and processes them.
-        - Detects hands and updates the game state.
-        - Displays the game frame with updated information.
-        - Handles the game over screen and restart option.
+        Initializes the game, loads assets, and sets up the camera.
         """
-        while True:
-            try:
-                _, img = self.game.cap.read()
-            except Exception as e:
-                print(f"Error capturing video: {e}")
-                break
+        # # Assets (images)
+        self.imgBackground = cv2.imread("Background.png")
+        self.asteroid_img = cv2.imread("Asteroid_img.png", cv2.IMREAD_UNCHANGED)
+        self.spaceship_img = cv2.imread("spaceship_img.png", cv2.IMREAD_UNCHANGED)
 
-            img = cv2.flip(img, 1)  # Flip the image horizontally for mirror effect
-            hands, img = self.game.detector.findHands(img, flipType=False)  # Detect hands
+        # def resource_path(relative_path):
+        #     """Returns the absolute path to the resource, works for dev and for PyInstaller."""
+        #     try:
+        #         # PyInstaller creates a temporary folder and stores path in _MEIPASS
+        #         base_path = sys._MEIPASS
+        #     except Exception:
+        #         base_path = os.path.abspath(".")
+        #     return os.path.join(base_path, relative_path)
+        #
+        # self.imgBackground = cv2.imread(resource_path("Background.png"))
+        # self.asteroid_img = cv2.imread(resource_path("Asteroid_img.png"), cv2.IMREAD_UNCHANGED)
+        # self.spaceship_img = cv2.imread(resource_path("spaceship_img.png"), cv2.IMREAD_UNCHANGED)
 
-            img = cv2.addWeighted(img, 0.8, self.game.imgBackground, 0.2, 0)  # Overlay background
-            img = self.game.update(img, hands)  # Update game state
+        # Video capture settings
+        self.cap = cv2.VideoCapture(0)
+        screen = screeninfo.get_monitors()[0]
+        self.screen_width, self.screen_height = screen.width, screen.height
+        self.cap.set(3, self.screen_width)
+        self.cap.set(4, self.screen_height)
+        cv2.namedWindow("Spaceship Game", cv2.WND_PROP_FULLSCREEN)
+        cv2.setWindowProperty("Spaceship Game", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
-            cv2.imshow("Spaceship Game", img)  # Show the game frame
-            key = cv2.waitKey(1)
-            if key == ESC_KEY:  # ESC to exit
-                self.game.game_over = True
+        # Game variables
+        self.game_over = False
+        self.start_time = time.time()
+        self.total_score = 0
 
-            if self.game.game_over:  # Game over condition
-                game_over_img = self.display_game_over(img)
-                cv2.imshow("Spaceship Game", game_over_img)
+        # Random generation parameters
+        self.min_pos = 0.35
+        self.max_pos = 0.55
 
-                while True:
-                    key = cv2.waitKey(1)
-                    if key == SPACE_KEY:  # Space to restart
-                        self.game.reset()
-                        break
-                    elif key == ESC_KEY:  # ESC to exit
-                        self.game.cap.release()
-                        cv2.destroyAllWindows()
-                        return
+        # Collision detection parameters
+        self.spaceship_collision_offset = 80  # The offset of the spaceship from the asteroid
+        self.collision_threshold = 50  # The threshold range for collision detection
 
-    def display_game_over(self, img):
+        # Hand detection and spaceship control
+        self.detector = HandDetector(detectionCon=0.8, maxHands=1)
+
+        # Create asteroid and spaceship objects
+        self.asteroids = [
+            Asteroid(self.generate_asteroid_pos(), self.generate_asteroid_speed(min_speed=10, max_speed=20),
+                     self.asteroid_img)
+            for _ in range(4)
+        ]
+        self.spaceship = Spaceship(self.spaceship_img)
+
+    def generate_asteroid_pos(self):
         """
-        Displays the game over screen.
+        Generates a random position for the asteroid within the game screen.
+        Returns: list: [x, y] representing the asteroid's position.
         """
-        game_over_img = img.copy()
-        cvzone.putTextRect(game_over_img, "Game Over", [300, 300],
-                           scale=7, thickness=6, offset=20, colorR=(0, 0, 0))
-        cvzone.putTextRect(game_over_img, f'Your Score: {self.game.total_score}', [200, 450],
-                           scale=7, thickness=6, offset=20, colorR=(0, 0, 0))
-        cvzone.putTextRect(game_over_img, f'Press SPACE to restart', [250, 600],
-                           scale=4, thickness=6, offset=15, colorT=(000, 255, 000), colorR=(0, 0, 0))
-        return game_over_img
+        x = random.randint(int(self.screen_width * self.min_pos), int(self.screen_width * self.max_pos))
+        y = random.randint(int(self.screen_height * self.min_pos), int(self.screen_height * self.max_pos))
+        return [x, y]
 
+    @staticmethod
+    def generate_asteroid_speed(min_speed=10, max_speed=20):
+        """
+        Generates random asteroid speeds along both axes.
+        Returns:
+            list: [speed_x, speed_y] representing the asteroid's movement speed.
+        """
+        return [random.randint(min_speed, max_speed), random.randint(min_speed, max_speed)]
 
-if __name__ == "__main__":
-    engine = GameEngine()
-    engine.run()
+    def check_collision(self):
+        """
+        Checks for a collision between the spaceship and any asteroid.
+        Returns: bool: True if a collision is detected, False otherwise.
+        """
+        for asteroid in self.asteroids:
+            ax, ay = asteroid.pos
+            # Check if the distance between the spaceship and the asteroid is smaller than the defined thresholds
+            if (abs(ax - (self.spaceship.x + self.spaceship_collision_offset)) < self.collision_threshold and
+                    abs(ay - self.spaceship.y) < self.collision_threshold):
+                return True
+        return False
+
+    def reset(self):
+        """
+        Resets the game, including the score, asteroids, and other parameters.
+        """
+        self.game_over = False
+        self.start_time = time.time()
+        self.total_score = 0
+        self.asteroids = [
+            Asteroid(self.generate_asteroid_pos(), self.generate_asteroid_speed(min_speed=10,max_speed=20), self.asteroid_img)
+            for _ in range(4)
+        ]
+
+    def update(self, img, hands):
+        """
+        Updates the game state, including hand tracking, spaceship movement,
+        asteroid movement, and collision detection.
+        Args:
+            img (numpy.ndarray): The current frame of the game.
+            hands (list): A list of detected hand objects, if any.
+        Returns:
+            numpy.ndarray: The updated image after applying changes.
+        """
+        if hands:
+            for hand in hands:
+                self.spaceship.update_position(hand,self.screen_height)
+                img = self.spaceship.draw(img)
+                if self.check_collision():
+                    self.game_over = True
+                    self.total_score = int(round(time.time() - self.start_time, 2) * 17.5)
+
+        for asteroid in self.asteroids:
+            asteroid.move(self.screen_width,self.screen_height)
+            img = asteroid.draw(img)
+
+        return img
