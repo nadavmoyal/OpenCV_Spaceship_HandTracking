@@ -25,11 +25,13 @@ pip install cvzone screeninfo numpy mediapipe
 2. Install the required libraries.
 3. Run the `GameEngine.py` file to start the game.
 
-Enjoy playing!
+Alternatively, you can skip the installation and download the EXE file to start the game directly!
 
-
-### Download the EXE file
-
-You can download the EXE file from the following Dropbox link:
+Download the EXE File
+Skip the installation and download the EXE file directly:
 
 [Download EXE](https://www.dropbox.com/scl/fi/k6bkgnbdpeojii88nh4q0/Spaceship-Game-v3.exe?rlkey=977gi1vu8krx1ytts2o3lomq1&st=30xoorkc&dl=0)
+
+Enjoy the game, and challenge your friends to beat your score!
+
+
