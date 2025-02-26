@@ -9,19 +9,17 @@ Methods:
 - __init__(): Initializes the game engine and the Game object.
 - run(): Main game loop that captures video, processes hand gestures,
          updates the game, and handles game over and restart logic.
-- display_game_over(img): Displays the game over screen.
 """
 
 import cv2
-import cvzone
-from GameEngine import Game
+from GameEngine import GameEngine
 
 ESC_KEY = 27
 SPACE_KEY = 32
 
-class GameEngine:
+class Main:
     def __init__(self):
-        self.game = Game()
+        self.game = GameEngine()
 
     def run(self):
         """
@@ -50,7 +48,7 @@ class GameEngine:
                 self.game.game_over = True
 
             if self.game.game_over:  # Game over condition
-                game_over_img = self.display_game_over(img)
+                game_over_img = self.game.display_game_over(img)
                 cv2.imshow("Spaceship Game", game_over_img)
 
                 while True:
@@ -63,20 +61,6 @@ class GameEngine:
                         cv2.destroyAllWindows()
                         return
 
-    def display_game_over(self, img):
-        """
-        Displays the game over screen.
-        """
-        game_over_img = img.copy()
-        cvzone.putTextRect(game_over_img, "Game Over", [300, 300],
-                           scale=7, thickness=6, offset=20, colorR=(0, 0, 0))
-        cvzone.putTextRect(game_over_img, f'Your Score: {self.game.total_score}', [200, 450],
-                           scale=7, thickness=6, offset=20, colorR=(0, 0, 0))
-        cvzone.putTextRect(game_over_img, f'Press SPACE to restart', [250, 600],
-                           scale=4, thickness=6, offset=15, colorT=(000, 255, 000), colorR=(0, 0, 0))
-        return game_over_img
-
-
 if __name__ == "__main__":
-    engine = GameEngine()
-    engine.run()
+    start_game = Main()
+    start_game.run()

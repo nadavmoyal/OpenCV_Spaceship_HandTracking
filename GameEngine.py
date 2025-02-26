@@ -24,9 +24,10 @@ Methods:
 - reset(): Resets the game, including the score, asteroids, and other parameters.
 - update(): Updates the game state, including hand tracking, spaceship movement,
   asteroid movement, and collision detection.
+- display_game_over(img): Displays the game over screen.
+
 """
-import os
-import sys
+
 import cv2
 from cvzone.HandTrackingModule import HandDetector
 import time
@@ -34,8 +35,9 @@ from Asteroid import Asteroid
 from Spaceship import Spaceship
 import screeninfo
 import random
+import cvzone
 
-class Game:
+class GameEngine:
     def __init__(self):
         """
         Initializes the game, loads assets, and sets up the camera.
@@ -44,19 +46,6 @@ class Game:
         self.imgBackground = cv2.imread("Background.png")
         self.asteroid_img = cv2.imread("Asteroid_img.png", cv2.IMREAD_UNCHANGED)
         self.spaceship_img = cv2.imread("spaceship_img.png", cv2.IMREAD_UNCHANGED)
-
-        # def resource_path(relative_path):
-        #     """Returns the absolute path to the resource, works for dev and for PyInstaller."""
-        #     try:
-        #         # PyInstaller creates a temporary folder and stores path in _MEIPASS
-        #         base_path = sys._MEIPASS
-        #     except Exception:
-        #         base_path = os.path.abspath(".")
-        #     return os.path.join(base_path, relative_path)
-        #
-        # self.imgBackground = cv2.imread(resource_path("Background.png"))
-        # self.asteroid_img = cv2.imread(resource_path("Asteroid_img.png"), cv2.IMREAD_UNCHANGED)
-        # self.spaceship_img = cv2.imread(resource_path("spaceship_img.png"), cv2.IMREAD_UNCHANGED)
 
         # Video capture settings
         self.cap = cv2.VideoCapture(0)
@@ -157,3 +146,16 @@ class Game:
             img = asteroid.draw(img)
 
         return img
+
+    def display_game_over(self, img):
+        """
+        Displays the game over screen.
+        """
+        game_over_img = img.copy()
+        cvzone.putTextRect(game_over_img, "Game Over", [300, 300],
+                           scale=7, thickness=6, offset=20, colorR=(0, 0, 0))
+        cvzone.putTextRect(game_over_img, f'Your Score: {self.total_score}', [200, 450],
+                           scale=7, thickness=6, offset=20, colorR=(0, 0, 0))
+        cvzone.putTextRect(game_over_img, f'Press SPACE to restart', [250, 600],
+                           scale=4, thickness=6, offset=15, colorT=(000, 255, 000), colorR=(0, 0, 0))
+        return game_over_img
