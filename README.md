@@ -23,7 +23,7 @@ pip install cvzone screeninfo numpy mediapipe
 
 1. Clone the repository.
 2. Install the required libraries.
-3. Run the `GameEngine.py` file to start the game.
+3. Run the `Main.py` file to start the game.
 
 Alternatively, you can skip the installation and download the EXE file to start the game directly!
 
