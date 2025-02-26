@@ -31,4 +31,5 @@ Enjoy playing!
 ### Download the EXE file
 
 You can download the EXE file from the following Dropbox link:
-TBC
+
+[Download EXE](https://www.dropbox.com/scl/fi/k6bkgnbdpeojii88nh4q0/Spaceship-Game-v3.exe?rlkey=977gi1vu8krx1ytts2o3lomq1&st=30xoorkc&dl=0)
