@@ -29,7 +29,12 @@ pip install cvzone screeninfo numpy mediapipe
 3. Run the `Main.py` file to start the game.
 
 Alternatively, you can skip the installation and download the EXE file to start the game directly!
+## How to Play
 
+- Stand about 1 meter away from the screen.
+- If you are left-handed, use your index finger; if you are right-handed, use your pinky finger.
+- Try to avoid the moving asteroids and stay alive as long as possible!
+- 
 ## Download the EXE File
 
 Skip the installation and download the **EXE** file directly:
