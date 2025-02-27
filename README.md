@@ -38,4 +38,11 @@ Skip the installation and download the **EXE** file directly:
 
 Enjoy the game, and challenge your friends to beat your score!
 
+## Gameplay Video
+
+Watch the gameplay in action:
+
+
+https://github.com/user-attachments/assets/3800834f-04e9-4d15-8bee-f7a08e49c03b
+
 
