@@ -3,7 +3,7 @@ Represents the main game engine that runs the spaceship game, handles input,
 updates the game state, and manages game over and restart.
 
 Attributes:
-- game (Game): The Game object that contains the game's logic and data.
+- game (GameEngine): The Game object that contains the game's logic and data.
 
 Methods:
 - __init__(): Initializes the game engine and the Game object.
