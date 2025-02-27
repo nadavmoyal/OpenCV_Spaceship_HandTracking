@@ -1,27 +1,48 @@
 ![image](https://github.com/user-attachments/assets/0c58de66-6f10-4b1b-8ee1-b16ca328fdc2)
 
-
 # Spaceship Hand Tracking Game
 
 ## Description
 
-A spaceship game where the player controls the spaceship using hand gestures tracked by a camera. Avoid asteroids and score points to win!
+The Spaceship Game is an interactive game where the player controls a spaceship using hand gestures. The objective is to avoid asteroids while navigating the spaceship on the screen. The game combines computer vision for hand tracking and implements asteroid movement with collision detection.
+
+## Code Structure
+
+### Key Classes:
+
+- **Asteroid**: Represents asteroids that move around and bounce off screen edges.  
+  - Methods: `move()`, `draw()`
+  
+- **Spaceship**: The player's spaceship follows hand movements detected by the `HandDetector`.  
+  - Methods: `update_position()`, `draw()`
+
+- **GameEngine**: Manages game logic, asteroid movement, spaceship control, collision detection, and score tracking.  
+  - Methods: `update()`, `check_collision()`, `reset()`
+
+- **Main**: Runs the main game loop, captures video frames, processes hand gestures, and manages the game state.  
+  - Methods: `run()`
+
+## How it Works:
+
+1. **Hand Tracking**: The game uses a hand tracking model to control the spaceship's movement.
+2. **Asteroids**: The asteroids are placed in random positions and given a random speed. They move at a fixed angle and change direction when they hit the edges of the screen.
+3. **Collision Detection**: The game checks if the spaceship collides with an asteroid and ends if so.
+4. **Restart Option**: Press the SPACE key after the game ends to restart.
 
 ## Required Libraries
 
-To run the game, you will need to install the following libraries:
-
-- **cvzone**: For hand detection and tracking (includes OpenCV functionality).
+- **cvzone**: Hand detection and tracking.
 - **screeninfo**: To get screen resolution and manage window size.
-- **numpy**: For advanced mathematical operations and image manipulation.
-- **mediapipe**: For hand tracking and other image processing tasks.
+- **numpy**: For mathematical operations.
+- **mediapipe**: For hand tracking and image processing.
 
-## Installation
+### Installation
 
-To install the necessary dependencies, you can use pip:
+To install the required libraries, run:
 ```bash
 pip install cvzone screeninfo numpy mediapipe
 ```
+
 ## How to Run
 
 1. Clone the repository.
@@ -31,10 +52,10 @@ pip install cvzone screeninfo numpy mediapipe
 Alternatively, you can skip the installation and download the EXE file to start the game directly!
 ## How to Play
 
-- Stand about 1 meter away from the screen.
-- If you are left-handed, use your index finger; if you are right-handed, use your pinky finger.
-- Try to avoid the moving asteroids and stay alive as long as possible!
-- 
+- Stand about 1 meter from the screen.
+- Left-handed? Use your index finger. Right-handed? Use your pinky finger.
+- Avoid asteroids and try to survive as long as possible!
+
 ## Download the EXE File
 
 Skip the installation and download the **EXE** file directly:
